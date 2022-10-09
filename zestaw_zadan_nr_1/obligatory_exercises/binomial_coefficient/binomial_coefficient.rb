@@ -109,3 +109,6 @@ class TestBinomialCoefficient
 end
 
 TestBinomialCoefficient.new.calc
+
+#TODO write a benchmark with graph
+#TODO write specs
