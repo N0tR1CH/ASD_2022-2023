@@ -1,0 +1,11 @@
+Erorr: Second number must be less or equal to first.
+Error: One or both of the numbers are negative.
+1
+1
+1
+1
+45
+45
+161700
+161700
+41417124750
