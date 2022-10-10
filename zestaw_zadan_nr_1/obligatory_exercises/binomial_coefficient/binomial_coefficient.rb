@@ -6,11 +6,7 @@
 # WSL2 with VScode using VScode server
 # no additionals libraries were used to make counting etc. easier :)
 # debugger
-require 'byebug'
-# rspec is test a suite for ruby programs
-require 'rspec'
-# benchmark let me test efficiency of methods below
-require 'benchmark/ips'
+# require 'byebug'
 
 class ErrorHandler
   class NumberGreaterOrEqualToZero < StandardError
@@ -108,7 +104,4 @@ class TestBinomialCoefficient
   end
 end
 
-TestBinomialCoefficient.new.calc
-
-#TODO write a benchmark with graph
-#TODO write specs
+# TestBinomialCoefficient.new.calc
