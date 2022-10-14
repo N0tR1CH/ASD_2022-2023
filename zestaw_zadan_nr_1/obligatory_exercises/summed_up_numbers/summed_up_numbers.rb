@@ -1,4 +1,3 @@
-require 'byebug'
 # adding method to an array class that checks uniqueness of array elements
 class Array
   def uniq?
