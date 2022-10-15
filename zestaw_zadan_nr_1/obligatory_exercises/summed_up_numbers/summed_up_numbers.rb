@@ -17,42 +17,43 @@ class Array
   end
 end
 
+# first approach uses iterations to achieve final condition
 module FirstApproach
   # module_function makes method self
 
   module_function
 
-  def summing_up_numbers(a)
-    until a.uniq?
-      sum = a.first
-      a.shift
-      unless a.find_index(sum).nil?
-        a.delete_at(a.find_index(sum))
+  def summing_up_numbers(arr)
+    until arr.uniq?
+      sum = arr.first
+      arr.shift
+      unless arr.find_index(sum).nil?
+        arr.delete_at(arr.find_index(sum))
         sum += sum
       end
-      a.push(sum)
+      arr.push(sum)
     end
 
     # returning an array size
-    a.size
+    arr.size
   end
 end
 
+# second approach uses recursion to achieve final condition
 module SecondApproach
   module_function
 
-  def summing_up_numbers(a)
-    if a.uniq?
-      a.size
+  def summing_up_numbers(arr)
+    if arr.uniq? then arr.size
     else
-      sum = a.first
-      a.shift
-      unless a.find_index(sum).nil?
-        a.delete_at(a.find_index(sum))
+      sum = arr.first
+      arr.shift
+      unless arr.find_index(sum).nil?
+        arr.delete_at(arr.find_index(sum))
         sum += sum
       end
-      a.push(sum)
-      summing_up_numbers(a)
+      arr.push(sum)
+      summing_up_numbers(arr)
     end
   end
 end
