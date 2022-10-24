@@ -1,12 +1,9 @@
-def optymalne_dostawy(arr)
+station_distances = Hash.new
 
-end
+n = 3
 
-arr = []
+(n.times).each { |i| station_distances[i] = gets.chomp.to_i }
 
-liczba_stacji = gets.chomp.to_i
+p station_distances
 
-liczba_stacji.times { arr << gets.chomp.to_i }
-
-# showing the array
-p arr
+station_distances.sort_by { |key, value| value }.to_h
