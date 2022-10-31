@@ -1,42 +1,48 @@
 # frozen_string_literal: true
 
+require 'byebug'
+
 def qsort(arr)
   return arr if arr.size < 2
 
   pivot = arr.first
-  arr.delete(arr.first)
 
   arr_less_than_pivot = arr.select { |element| element < pivot }
   arr_greater_than_pivot = arr.select { |element| element > pivot }
 
-  qsort(arr_less_than_pivot) + [pivot] + qsort(arr_greater_than_pivot)
+  qsort(arr_less_than_pivot) + ([pivot] * arr.count(arr.first)) + qsort(arr_greater_than_pivot)
 end
 
-# hash to store values of distances with its indexes
-hash = {}
+def pick_median(arr, liczba_stacji)
+  arr.size.even? ? arr[(liczba_stacji / 2) - 1] : arr[liczba_stacji / 2]
+end
 
-# variable to store number of stations
+def optimize_shipment(liczba_stacji, stacje)
+  hash = {}
+  liczba_stacji.times.each { |i| hash[i] = stacje[i] }
+  arr = qsort(hash.values)
+  median = pick_median(arr, liczba_stacji)
+  arr.delete(median)
+  sum = find_sum_of_differences(arr, median)
+  indeks_elementu = hash.key(median)
+  return_results(indeks_elementu, sum)
+end
+
+def return_results(indeks_elementu, sum)
+  results = Array.new(2, 0)
+  results[0] = indeks_elementu
+  results[1] = sum
+  results
+end
+
+def find_sum_of_differences(arr, median)
+  sum = 0
+  arr.each { |element| sum += (element - median).abs }
+  sum
+end
+
 liczba_stacji = gets.chomp.to_i
+stacje = Array.new(liczba_stacji)
+liczba_stacji.times.each { |i| stacje[i] = gets.chomp.to_i }
 
-# loop to get values into the hash
-liczba_stacji.times.each { |i| hash[i] = gets.chomp.to_i }
-
-# getting sorted array form hash values
-arr = qsort(hash.values)
-
-# getting the median
-median = arr[liczba_stacji / 2]
-
-# deleting median
-arr.delete(median)
-
-# counting sum of differences
-sum = 0
-arr.each { |element| sum += (element - median).abs }
-
-# getting element index
-indeks_elementu = hash.key(median)
-
-# result
-puts indeks_elementu
-puts sum
+results = optimize_shipment(liczba_stacji, stacje)
