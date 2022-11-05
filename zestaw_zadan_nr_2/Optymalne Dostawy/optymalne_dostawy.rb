@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
+# Zlozonosc obliczeniowa calego programu:
+# Optymistyczna -> O(n^2 * log(n))
+# Pestymistyczna -> O(n^3)
+
 require 'byebug'
 
+# Zlozonosc quick sort:
+# O(n log n)
+# Pesymistyczna -> O(n ^ 2)
 def qsort(arr)
   return arr if arr.size < 2
 
@@ -35,6 +42,7 @@ def return_results(indeks_elementu, sum)
   results
 end
 
+# O(n - 1)
 def find_sum_of_differences(arr, median)
   sum = 0
   arr.each { |element| sum += (element - median).abs }
