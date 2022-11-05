@@ -44,5 +44,3 @@ end
 liczba_stacji = gets.chomp.to_i
 stacje = Array.new(liczba_stacji)
 liczba_stacji.times.each { |i| stacje[i] = gets.chomp.to_i }
-
-results = optimize_shipment(liczba_stacji, stacje)
