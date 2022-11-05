@@ -18,32 +18,28 @@ class Point
   end
 end
 
-def closest_pair(coordinates_sorted_by_x, _coordinates_sorted_by_y)
+def closest_pair(coordinates_sorted_by_x, coordinates_sorted_by_y)
   number_of_points = coordinates_sorted_by_x.size
 
   # BASE CASES
   case number_of_points
   when 2
-    return "#{coordinates_sorted_by_x[0]}\n#{coordinates_sorted_by_x[1]}"
+    return Point.distance_between_points(coordinates_sorted_by_x[0], coordinates_sorted_by_x[1])
   when 3
-    result = [
+    return [
       Point.distance_between_points(coordinates_sorted_by_x[0], coordinates_sorted_by_x[1]),
       Point.distance_between_points(coordinates_sorted_by_x[1], coordinates_sorted_by_x[2]),
       Point.distance_between_points(coordinates_sorted_by_x[0], coordinates_sorted_by_x[2])
-    ].each_with_index.min
-
-    case result[1]
-    when 0
-      return "#{coordinates_sorted_by_x[0]}\n#{coordinates_sorted_by_x[1]}"
-    when 1
-      return "#{coordinates_sorted_by_x[1]}\n#{coordinates_sorted_by_x[2]}"
-    when 2
-      return "#{coordinates_sorted_by_x[0]}\n#{coordinates_sorted_by_x[2]}"
-    end
+    ].min
   end
 
   # DIVIDE
-
+  minimum_distance_left = closest_pair(coordinates_sorted_by_x[0...(coordinates_sorted_by_x.size / 2)],
+                                       coordinates_sorted_by_y)
+  minimum_distance_right = closest_pair(
+    coordinates_sorted_by_x[(coordinates_sorted_by_x.size / 2)...coordinates_sorted_by_x.size], coordinates_sorted_by_y
+  )
+  minimum_distance_overall = [minimum_distance_left, minimum_distance_right].min
 end
 
 coordinates = [Point.new(4, 4),
