@@ -56,7 +56,7 @@ end
 describe '#optimize_shipment' do
   let(:liczba_stacji) { 3 }
   let(:stacje) { [10, 4, 8] }
-  let(:results) { [2, 6]}
+  let(:results) { [2, 6] }
 
   it 'should return array with results' do
     expect(optimize_shipment(liczba_stacji, stacje)).to eq(results)
