@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # spec/optymalne_dostawy_spec.rb
 
 require 'spec_helper'
