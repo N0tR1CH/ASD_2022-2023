@@ -1,45 +1,39 @@
 # frozen_string_literal: true
 
-# Punkt
-class Point
-  attr_accessor :x, :y
+require_relative 'point'
+require_relative 'integer'
+require 'byebug'
 
-  def initialize(x, y)
-    @x = x
-    @y = y
+module ClosestPairOfPoints
+  class << self
+    def brute_force(points)
+      point1 = point2 = Point.new(0, 0)
+      min_distance = Integer::MAX
+      points.size.times.each do |i|
+        (i + 1..points.size - 1).each do |j|
+          distance = Point.distance_between_points(points[i], points[j])
+          next if min_distance <= distance
+
+          min_distance = distance
+          point1 = points[i]
+          point2 = points[j]
+        end
+      end
+      [point1, point2, min_distance]
+    end
+
+    def recursion(points_sorted_by_x, points_sorted_by_y)
+      number_of_points = points_sorted_by_x.size
+      return brute_force(points_sorted_by_x) if number_of_points <= 3
+
+    end
+
+    def find_closest_pair_of_points(points)
+      points_sorted_by_x = points.sort_by(&:x)
+      points_sorted_by_y = points.sort_by(&:y)
+      recursion(points_sorted_by_x, points_sorted_by_y)
+    end
   end
-
-  def self.distance_between_points(point1, point2)
-    Math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2)
-  end
-
-  def to_s
-    "x: #{@x} y: #{@y}"
-  end
-end
-
-def closest_pair(coordinates_sorted_by_x, coordinates_sorted_by_y)
-  number_of_points = coordinates_sorted_by_x.size
-
-  # BASE CASES
-  case number_of_points
-  when 2
-    return Point.distance_between_points(coordinates_sorted_by_x[0], coordinates_sorted_by_x[1])
-  when 3
-    return [
-      Point.distance_between_points(coordinates_sorted_by_x[0], coordinates_sorted_by_x[1]),
-      Point.distance_between_points(coordinates_sorted_by_x[1], coordinates_sorted_by_x[2]),
-      Point.distance_between_points(coordinates_sorted_by_x[0], coordinates_sorted_by_x[2])
-    ].min
-  end
-
-  # DIVIDE
-  minimum_distance_left = closest_pair(coordinates_sorted_by_x[0...(coordinates_sorted_by_x.size / 2)],
-                                       coordinates_sorted_by_y)
-  minimum_distance_right = closest_pair(
-    coordinates_sorted_by_x[(coordinates_sorted_by_x.size / 2)...coordinates_sorted_by_x.size], coordinates_sorted_by_y
-  )
-  minimum_distance_overall = [minimum_distance_left, minimum_distance_right].min
 end
 
 coordinates = [Point.new(4, 4),
@@ -48,5 +42,4 @@ coordinates = [Point.new(4, 4),
                Point.new(3, 1),
                Point.new(1, 1)]
 
-puts closest_pair(coordinates.sort_by(&:x), coordinates.sort_by(&:y))
-# @coordinates_sorted_by_y = coordinates.sort_by!(&:y)
+puts ClosestPairOfPoints.brute_force(coordinates)
