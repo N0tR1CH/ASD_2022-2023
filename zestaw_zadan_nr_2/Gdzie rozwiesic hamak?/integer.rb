@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Integer
   N_BYTES = [42].pack('i').size
   N_BITS = N_BYTES * 16

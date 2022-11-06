@@ -27,6 +27,7 @@ module ClosestPairOfPoints
       number_of_points = points_sorted_by_x.size
       return brute_force(points_sorted_by_x) if number_of_points <= 3
 
+      mid_point = points_sorted_by_x[number_of_points / 2]
       # DIVIDE
       minimum_distance_left = recurrence(points_sorted_by_x[0...points_sorted_by_x.size / 2], points_sorted_by_y,
                                          points)
@@ -41,6 +42,28 @@ module ClosestPairOfPoints
                                    end
                                  end
       # COMBINE
+      strip = find_strip(points_sorted_by_y, minimum_distance_overall, mid_point)
+
+      times_to_check_strip = strip.size > 7 ? 7 : strip.size - 1
+
+      strip.size.times.each do |i|
+        (i + 1..times_to_check_strip).each do |j|
+          next unless Point.distance_between_points(strip[i], strip[j]) < minimum_distance_overall[2]
+
+          minimum_distance_overall[0] = strip[i]
+          minimum_distance_overall[1] = strip[j]
+          minimum_distance_overall[2] = Point.distance_between_points(strip[i], strip[j])
+        end
+      end
+      minimum_distance_overall
+    end
+
+    def find_strip(points_sorted_by_y, minimum_distance_overall, mid_point)
+      strip = []
+      points_sorted_by_y.size.times.each do |i|
+        strip << points_sorted_by_y[i] if (points_sorted_by_y[i].x - mid_point.x).abs < minimum_distance_overall[2]
+      end
+      strip
     end
 
     def check_which_one_was_first(points_left, points_right, points)
