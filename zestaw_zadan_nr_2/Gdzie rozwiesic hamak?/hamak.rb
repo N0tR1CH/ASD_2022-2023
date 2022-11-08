@@ -5,6 +5,8 @@ require_relative 'integer'
 require 'byebug'
 
 module ClosestPairOfPoints
+  @does_it_leave_base_case |= false
+
   class << self
     def brute_force(points)
       point1 = point2 = Point.new(0, 0)
@@ -19,6 +21,9 @@ module ClosestPairOfPoints
           point2 = points[j]
         end
       end
+
+      return "#{point1.x} #{point1.y}\n#{point2.x} #{point2.y}" unless @does_it_leave_base_case
+
       [point1, point2, min_distance]
     end
 
@@ -26,6 +31,8 @@ module ClosestPairOfPoints
       # BASE CASES
       number_of_points = points_sorted_by_x.size
       return brute_force(points_sorted_by_x) if number_of_points <= 3
+
+      @does_it_leave_base_case |= true
       mid_point = points_sorted_by_x[number_of_points / 2]
       # DIVIDE
       minimum_distance_left = recurrence(points_sorted_by_x[0...points_sorted_by_x.size / 2], points_sorted_by_y,
@@ -54,6 +61,7 @@ module ClosestPairOfPoints
           minimum_distance_overall[2] = Point.distance_between_points(strip[i], strip[j])
         end
       end
+      @does_it_leave_base_case = false
       "#{minimum_distance_overall[0].x} #{minimum_distance_overall[0].y}\n#{minimum_distance_overall[1].x} #{minimum_distance_overall[1].y}"
     end
 
@@ -80,10 +88,11 @@ module ClosestPairOfPoints
   end
 end
 
-coordinates = [Point.new(4, 4),
-               Point.new(0, 0),
-               Point.new(3, 3),
-               Point.new(3, 1),
-               Point.new(1, 1)]
+# DRIVER CODE BELOW :)
+# coordinates = [Point.new(4, 4),
+#                Point.new(0, 0),
+#                Point.new(3, 3),
+#                Point.new(3, 1),
+#                Point.new(1, 1)]
 
-puts ClosestPairOfPoints.find_closest_pair_of_points(coordinates)
+# puts ClosestPairOfPoints.find_closest_pair_of_points(coordinates)
