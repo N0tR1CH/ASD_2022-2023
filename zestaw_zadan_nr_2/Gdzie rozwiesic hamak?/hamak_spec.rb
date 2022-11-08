@@ -98,5 +98,27 @@ describe ClosestPairOfPoints do
                                               coordinates)).to eq("1 1\n4 4")
       end
     end
+
+    context 'three coordinates' do
+      let(:coordinates) do
+        [Point.new(4, 4),
+         Point.new(1, 1),
+         Point.new(5, 5)]
+      end
+      let(:points_sorted_by_x) do
+        [Point.new(1, 1),
+         Point.new(4, 4),
+         Point.new(5, 5)]
+      end
+      let(:points_sorted_by_y) do
+        [Point.new(1, 1),
+         Point.new(4, 4),
+         Point.new(5, 5)]
+      end
+      it 'should return points with minimum distance' do
+        expect(ClosestPairOfPoints.recurrence(points_sorted_by_x, points_sorted_by_y,
+                                              coordinates)).to eq("4 4\n5 5")
+      end
+    end
   end
 end
