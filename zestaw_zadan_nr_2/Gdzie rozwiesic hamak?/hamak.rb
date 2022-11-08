@@ -26,7 +26,6 @@ module ClosestPairOfPoints
       # BASE CASES
       number_of_points = points_sorted_by_x.size
       return brute_force(points_sorted_by_x) if number_of_points <= 3
-
       mid_point = points_sorted_by_x[number_of_points / 2]
       # DIVIDE
       minimum_distance_left = recurrence(points_sorted_by_x[0...points_sorted_by_x.size / 2], points_sorted_by_y,
@@ -55,7 +54,7 @@ module ClosestPairOfPoints
           minimum_distance_overall[2] = Point.distance_between_points(strip[i], strip[j])
         end
       end
-      minimum_distance_overall
+      "#{minimum_distance_overall[0].x} #{minimum_distance_overall[0].y}\n#{minimum_distance_overall[1].x} #{minimum_distance_overall[1].y}"
     end
 
     def find_strip(points_sorted_by_y, minimum_distance_overall, mid_point)

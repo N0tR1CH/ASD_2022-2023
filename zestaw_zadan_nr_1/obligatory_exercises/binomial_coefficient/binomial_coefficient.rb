@@ -90,7 +90,7 @@ class TestBinomialCoefficient
       m = line.split(' ').map(&:to_i).last
 
       f.puts dynamic_programming(n, m)
-      f.puts recursive(n, m)
+      #f.puts recursive(n, m)
 
     rescue ErrorHandler::NumberGreaterOrEqualToZero => e
       f.puts "Error: #{e.message}."
@@ -104,4 +104,4 @@ class TestBinomialCoefficient
   end
 end
 
-# TestBinomialCoefficient.new.calc
+TestBinomialCoefficient.new.calc
