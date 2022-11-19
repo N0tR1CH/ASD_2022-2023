@@ -12,9 +12,7 @@ class MakeChangeProblem
       counter = begin_a_hash_counter(amount, coins)
       coins.reverse_each do |coin|
         (0..(amount - coin)).each do |j|
-          next unless table[j] < INFINITY
-
-          next unless table[j] + 1 < table[j + coin]
+          next unless table[j] < INFINITY && table[j] + 1 < table[j + coin]
           next if counter[j][coin] + 1 > limits[coin]
 
           table[j + coin] = table[j] + 1
