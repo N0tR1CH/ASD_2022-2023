@@ -2,6 +2,7 @@
 
 require 'byebug'
 
+# Class for methods that solve making a change problem
 class MakeChangeProblem
   INFINITY = Float::INFINITY
 
