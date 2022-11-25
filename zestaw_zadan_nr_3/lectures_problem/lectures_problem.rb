@@ -27,7 +27,36 @@ module LecturesProblem
     end
 
     def find_maximum_amount_of_lectures(wishes:)
+      # Sorting lectures by ending time
+      sort_by_finish_time(wishes)
+      # Creating an array containing durations
+      durations = init_durations(wishes)
+      # Loop through lectures and find maximum amount of non overlapping lectures
+      (1...wishes.size).each do |i|
+        (0...wishes.size).each do |j|
+          break if does_lectures_overlap?(wishes[i], wishes[j])
+          next if i == j
 
+          durations[i] = durations[j] + wishes[i][:duration] if durations[i] < (durations[j] + wishes[i][:duration])
+        end
+      end
+      durations.max
+    end
+
+    def sort_by_finish_time(wishes)
+      wishes.sort_by! { |lecture| lecture[:end_time] }
+    end
+
+    def does_lectures_overlap?(first_lecture, second_lecture)
+      (first_lecture[:start_time] < second_lecture[:end_time]) &&
+        (first_lecture[:end_time] > second_lecture[:start_time])
+    end
+
+    def init_durations(wishes)
+      arr = []
+      wishes.each { |wish| arr.push(wish[:duration]) }
+      arr
     end
   end
+  private_class_method %i[sort_by_finish_time does_lectures_overlap? init_durations]
 end
