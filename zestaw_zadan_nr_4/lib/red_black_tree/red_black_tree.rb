@@ -1,13 +1,13 @@
-# frozen_string_literal: true
+require 'byebug'
 
 class RedBlackTree
   # Red-black tree node class
   class Node
-    attr_reader :key, :value, :left, :right, :parent, :color
+    attr_accessor :key, :value, :left, :right, :parent, :color
 
     # Initialize a new node with the given key and value, color, and parent, and
     # optional left and right children
-    def initialize(key, value, color, parent, left = nil, right = nil)
+    def initialize(key, value, color, parent, left=nil, right=nil)
       @key = key
       @value = value
       @color = color
@@ -56,11 +56,11 @@ class RedBlackTree
     parent = nil
     while current
       parent = current
-      current = if key < current.key
-                  current.left
-                else
-                  current.right
-                end
+      if key < current.key
+        current = current.left
+      else
+        current = current.right
+      end
     end
 
     # Create the new node and insert it into the tree
@@ -87,7 +87,9 @@ class RedBlackTree
 
     # Case 2: The parent of the node is black, so the tree is already balanced
     # and we can return
-    return if node.parent.color == :black
+    if node.parent.color == :black
+      return
+    end
 
     # Case 3: The uncle of the node is red, so we can repaint the parent and
     # uncle black and the grandparent red, and then recursively rebalance
@@ -139,7 +141,9 @@ class RedBlackTree
   def rotate_left(node)
     right_child = node.right
     node.right = right_child.left
-    right_child.left.parent = node if right_child.left
+    if right_child.left
+      right_child.left.parent = node
+    end
     right_child.parent = node.parent
     if node.parent.nil?
       @root = right_child
@@ -156,7 +160,9 @@ class RedBlackTree
   def rotate_right(node)
     left_child = node.left
     node.left = left_child.right
-    left_child.right.parent = node if left_child.right
+    if left_child.right
+      left_child.right.parent = node
+    end
     left_child.parent = node.parent
     if node.parent.nil?
       @root = left_child
@@ -174,7 +180,7 @@ class RedBlackTree
     current = @root
     while current
       if key == current.key
-        return current
+        return current.value
       elsif key < current.key
         current = current.left
       else
@@ -187,14 +193,18 @@ class RedBlackTree
   # Return the minimum node in the subtree rooted at the given node
   def minimum(node)
     current = node
-    current = current.left while current.left
+    while current.left
+      current = current.left
+    end
     current
   end
 
   # Return the maximum node in the subtree rooted at the given node
   def maximum(node)
     current = node
-    current = current.right while current.right
+    while current.right
+      current = current.right
+    end
     current
   end
 
@@ -208,7 +218,9 @@ class RedBlackTree
     # Otherwise, the successor is the lowest ancestor of the node whose left
     # child is also an ancestor of the node
     current = node
-    current = current.parent while current.parent && current.parent.right == current
+    while current.parent && current.parent.right == current
+      current = current.parent
+    end
     current.parent
   end
 
@@ -217,12 +229,16 @@ class RedBlackTree
   def predecessor(node)
     # If the node has a left child, the predecessor is the maximum node in the
     # left subtree
-    return maximum(node.left) if node.left
+    if node.left
+      return maximum(node.left)
+    end
 
     # Otherwise, the predecessor is the lowest ancestor of the node whose right
     # child is also an ancestor of the node
     current = node
-    current = current.parent while current.parent && current.parent.left == current
+    while current.parent && current.parent.left == current
+      current = current.parent
+    end
     current.parent
   end
 
@@ -238,17 +254,23 @@ class RedBlackTree
     end
 
     # If the node has at most one child, move that child up to replace the node
-    child = node.left || node.right
+    if node.left
+      child = node.left
+    else
+      child = node.right
+    end
     if node.color == :black
       node.color = child.color unless child.nil?
       delete_case1(node)
     end
     if node.parent.nil?
       @root = child
-    elsif node == node.parent.left
-      node.parent.left = child
     else
-      node.parent.right = child
+      if node == node.parent.left
+        node.parent.left = child
+      else
+        node.parent.right = child
+      end
     end
     child.parent = node.parent unless child.nil?
   end
@@ -257,7 +279,7 @@ class RedBlackTree
   def delete_case1(node)
     if node.parent.nil?
       # If the node is the root, there is nothing to do
-      nil
+      return
     else
       delete_case2(node)
     end
