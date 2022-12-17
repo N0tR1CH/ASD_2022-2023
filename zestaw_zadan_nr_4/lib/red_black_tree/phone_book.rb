@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
 require 'byebug'
-require_relative 'red_black_tree'
+require_relative 'avl_tree'
 
+# Klasa reprezentująca książke telefoniczną
 class PhoneBook
   attr_reader :tree
 
+  # Podklasa klasy PhoneBook, reprezentuje kontakt książki telefonicznej
   class Contact
     attr_reader :first_name, :last_name, :address, :phone_number, :company
 
@@ -29,12 +31,8 @@ class PhoneBook
     end
   end
 
-  def initialize(contact)
-    @tree = if contact.company.nil?
-              RedBlackTree.new("#{contact.first_name} #{contact.last_name} #{contact.address}", contact)
-            else
-              RedBlackTree.new("#{contact.company} #{contact.address}", contact)
-            end
+  def initialize
+    @tree = AVLTree.new
   end
 
   def add(contact)
@@ -45,19 +43,30 @@ class PhoneBook
     end
   end
 
-  def remove(contact)
-    if contact.company.nil?
-      @tree.delete("#{contact.first_name} #{contact.last_name} #{contact.address}")
-    else
-      @tree.delete("#{contact.company} #{contact.address}")
+  def remove(key)
+    @tree.delete(key)
+  end
+
+  def find(key)
+    @tree.search(key)
+  end
+
+  def to_file(file_name)
+    file = File.open(file_name, 'w')
+    file.puts(@tree.inorder_traversal)
+  end
+
+  def companies_from_file(file_name)
+    IO.foreach(file_name) do |line|
+      words = line.split('|')
+      add(Contact.new(company: words[0], address: words[1], phone_number: words[2]))
     end
   end
 
-  def find(contact)
-    if contact.company.nil?
-      @tree.search("#{contact.first_name} #{contact.last_name} #{contact.address}")
-    else
-      @tree.search("#{contact.company} #{contact.address}")
+  def people_from_file(file_name)
+    IO.foreach(file_name) do |line|
+      words = line.split('|')
+      add(Contact.new(first_name: words[0], last_name: words[1], address: words[2], phone_number: words[3]))
     end
   end
 end
