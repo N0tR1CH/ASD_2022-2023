@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 # Zlozonosc obliczeniowa calego programu:
-# Optymistyczna -> O(n^2 * log(n))
-# Pestymistyczna -> O(n^3)
 
 require 'byebug'
 
@@ -52,3 +50,5 @@ end
 liczba_stacji = gets.chomp.to_i
 stacje = Array.new(liczba_stacji)
 liczba_stacji.times.each { |i| stacje[i] = gets.chomp.to_i }
+#puts optimize_shipment(liczba_stacji, stacje)
+

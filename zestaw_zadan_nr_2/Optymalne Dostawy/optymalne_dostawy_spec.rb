@@ -74,3 +74,4 @@ describe '#find_sum_of_differences' do
     expect(find_sum_of_differences(arr, median)).to eq(result)
   end
 end
+

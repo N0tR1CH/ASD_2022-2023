@@ -23,22 +23,17 @@ class RedBlackTree
 
     # Return the sibling of this node (i.e. the other node that has the same parent)
     def sibling
-      if @parent.nil? || @parent.left == self
-        @parent.right
-      else
-        @parent.left
-      end
+      return @parent.right if @parent.nil? || @parent.left == self
+
+      @parent.left
     end
 
     # Return the uncle of this node (i.e. the sibling of its parent)
     def uncle
-      if @parent.nil? || @parent.parent.nil?
-        nil
-      elsif @parent.parent.left == @parent
-        @parent.parent.right
-      else
-        @parent.parent.left
-      end
+      return nil if @parent.nil? || @parent.parent.nil?
+      return @parent.parent.right if @parent.parent.left == @parent
+
+      @parent.parent.left
     end
   end
 
@@ -56,11 +51,11 @@ class RedBlackTree
     parent = nil
     while current
       parent = current
-      if key < current.key
-        current = current.left
-      else
-        current = current.right
-      end
+      current = if key < current.key
+                  current.left
+                else
+                  current.right
+                end
     end
 
     # Create the new node and insert it into the tree
@@ -86,10 +81,7 @@ class RedBlackTree
     end
 
     # Case 2: The parent of the node is black, so the tree is already balanced
-    # and we can return
-    if node.parent.color == :black
-      return
-    end
+    return if node.parent.color == :black
 
     # Case 3: The uncle of the node is red, so we can repaint the parent and
     # uncle black and the grandparent red, and then recursively rebalance
@@ -193,18 +185,14 @@ class RedBlackTree
   # Return the minimum node in the subtree rooted at the given node
   def minimum(node)
     current = node
-    while current.left
-      current = current.left
-    end
+    current = current.left while current.left
     current
   end
 
   # Return the maximum node in the subtree rooted at the given node
   def maximum(node)
     current = node
-    while current.right
-      current = current.right
-    end
+    current = current.right while current.right
     current
   end
 
