@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'byebug'
 require_relative 'avl_tree'
 
 # Klasa reprezentująca książke telefoniczną
@@ -9,13 +8,15 @@ class PhoneBook
 
   # Podklasa klasy PhoneBook, reprezentuje kontakt książki telefonicznej
   class Contact
-    attr_reader :first_name, :last_name, :address, :phone_number, :company
+    attr_accessor :first_name, :last_name, :address, :phone_number, :company
 
     def initialize(address:, phone_number:, first_name: nil, last_name: nil, company: nil)
       if first_name && last_name && company
-        raise ARgumentError, 'Cannot provide both first_name and last_name and company'
+        raise ARgumentError,
+              'Cannot provide both first_name and last_name and company'
       elsif !(first_name && last_name) && !company
-        raise ArgumentError, 'Must provide either first_name and last_name or company'
+        raise ArgumentError,
+              'Must provide either first_name and last_name or company'
       end
 
       @first_name = first_name
@@ -26,8 +27,12 @@ class PhoneBook
     end
 
     def to_s
-      puts "#{@first_name} #{@last_name} #{address} #{phone_number}" if @company.nil?
-      puts "#{@company} #{address} #{phone_number}" if @company
+      case @company
+      when nil
+        puts "#{@first_name} #{@last_name} #{@address} #{@phone_number}"
+      when true
+        puts "#{@company} #{@address} #{@phone_number}" if @company
+      end
     end
   end
 
@@ -48,7 +53,11 @@ class PhoneBook
   end
 
   def find(key)
-    @tree.search(key)
+    @tree.search(key).value
+  end
+
+  def add_number_to_existing_contact(key, number)
+    @tree.search(key).value.phone_number << number
   end
 
   def to_file(file_name)
